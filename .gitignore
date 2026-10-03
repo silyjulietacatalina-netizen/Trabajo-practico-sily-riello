@@ -1,0 +1,10 @@
+# Carpetas que genera CLion / CMake al compilar
+cmake-build-*/
+.idea/
+
+# Archivos generados por la opcion 4 del programa
+disponibles.txt
+prestados.txt
+
+# Ejecutables
+*.exe
