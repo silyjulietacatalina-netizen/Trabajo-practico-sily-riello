@@ -29,6 +29,10 @@ Tema: LIBROS
 #define ANIO_MIN 1450
 #define ANIO_MAX 2026
 
+#define ARCHIVO_LIBROS "libros.txt"
+#define ARCHIVO_DISPONIBLES "disponibles.txt"
+#define ARCHIVO_PRESTADOS "prestados.txt"
+
 
 int main(void) {
     return 0;
