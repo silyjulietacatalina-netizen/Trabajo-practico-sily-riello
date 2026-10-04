@@ -33,6 +33,13 @@ Tema: LIBROS
 #define ARCHIVO_DISPONIBLES "disponibles.txt"
 #define ARCHIVO_PRESTADOS "prestados.txt"
 
+typedef struct {
+    char titulo[MAX_STR];
+    char autor[MAX_STR];
+    int anio;
+    float precio;
+    bool disponible;
+} t_libro;
 
 int main(void) {
     return 0;
