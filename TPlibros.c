@@ -17,6 +17,11 @@ Tema: LIBROS
      5. Salir
  */
 
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+#include <ctype.h>
+
 int main(void) {
     return 0;
 }
