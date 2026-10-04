@@ -44,3 +44,11 @@ typedef struct {
 int main(void) {
     return 0;
 }
+
+typedef enum {
+    OP_AGREGAR = 1,
+    OP_LISTAR,
+    OP_FILTRAR,
+    OP_DIVIDIR,
+    OP_SALIR
+} t_opcion;
