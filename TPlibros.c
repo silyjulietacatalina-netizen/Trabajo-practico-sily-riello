@@ -41,10 +41,6 @@ typedef struct {
     bool disponible;
 } t_libro;
 
-int main(void) {
-    return 0;
-}
-
 typedef enum {
     OP_AGREGAR = 1,
     OP_LISTAR,
@@ -52,3 +48,8 @@ typedef enum {
     OP_DIVIDIR,
     OP_SALIR
 } t_opcion;
+
+int main(void) {
+    return 0;
+}
+
