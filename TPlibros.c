@@ -23,6 +23,12 @@ Tema: LIBROS
 #include <stdio.h>
 #include <stdbool.h>
 
+#define MAX_STR 60
+#define CAMPOS_LIBRO 5
+#define ANIO_MIN 1450
+#define ANIO_MAX 2026
+
+
 int main(void) {
     return 0;
 }
