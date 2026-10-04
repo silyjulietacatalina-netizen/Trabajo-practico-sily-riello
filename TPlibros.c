@@ -48,8 +48,22 @@ typedef enum {
     OP_DIVIDIR,
     OP_SALIR
 } t_opcion;
+//DECLARACION FUNCIONES -F
+void leerLinea(char *destino, int tam);
+void leerTexto(const char *mensaje, char *destino, int tam);
+int leerEntero(const char *mensaje, int min, int max);
+FILE *abrirArchivo(const char *nombre, const char *modo);
+bool leerLibro(FILE *archivo, t_libro *libro);
+void escribirLibro(FILE *archivo, const t_libro *libro);
+void cargarLibro(t_libro *libro);
+void agregarLibro(const char *nombreArchivo);
+void dividirArchivo(const char *nombreOrigen, const char *nombreDisponibles,
+                    const char *nombrePrestados);
 
 int main(void) {
+
+
+
+
     return 0;
 }
-
