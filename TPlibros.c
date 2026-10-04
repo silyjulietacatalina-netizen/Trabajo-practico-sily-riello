@@ -22,6 +22,14 @@ Tema: LIBROS
 #include <stdbool.h>
 #include <ctype.h>
 
+#define MAX_STR 60
+#define MAX_LINEA 100
+#define CAMPOS_LIBRO 5
+#define SEPARADOR ';'
+#define ANIO_MIN 1450
+#define ANIO_MAX 2026
+
+
 int main(void) {
     return 0;
 }
