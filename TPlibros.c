@@ -17,11 +17,13 @@ Tema: LIBROS
      5. Salir
  */
 
+//bibliotecas -J
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
 
+//Macros y definiciones -J
 #define MAX_STR 60
 #define MAX_LINEA 100
 #define CAMPOS_LIBRO 5
@@ -33,6 +35,7 @@ Tema: LIBROS
 #define ARCHIVO_DISPONIBLES "disponibles.txt"
 #define ARCHIVO_PRESTADOS "prestados.txt"
 
+//Definicion de estructuras -J
 typedef struct {
     char titulo[MAX_STR];
     char autor[MAX_STR];
@@ -48,6 +51,7 @@ typedef enum {
     OP_DIVIDIR,
     OP_SALIR
 } t_opcion;
+
 //DECLARACION FUNCIONES -F
 void leerLinea(char *destino, int tam);
 void leerTexto(const char *mensaje, char *destino, int tam);
