@@ -63,6 +63,16 @@ void agregarLibro(char nombreArchivo[]);
 void dividirArchivo(char nombreOrigen[], char nombreDisponibles[],
                     char nombrePrestados[]);
 
+//Prototipos de funciones (J)
+void mostrarMenu(void);
+float leerFloatPositivo(char mensaje[]);
+bool leerSiNo(char mensaje[]);
+void mostrarEncabezado(void);
+void mostrarLibro(t_libro libro);
+bool cumpleCondicion(t_libro libro, float precioMaximo);
+void listarLibros(char nombreArchivo[], bool filtrar, float precioMaximo);
+void listarPorPrecio(char nombreArchivo[]);
+
 int main(void) {
 
 
