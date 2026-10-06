@@ -75,6 +75,93 @@ void listarLibros(const char *nombreArchivo, bool filtrar, float precioMaximo);
 void listarPorPrecio(const char *nombreArchivo);
 
 int main(void) {
+      int opcion;
+
+    do {
+        mostrarMenu();
+        /* leerEntero ya valida que la opcion este entre 1 y 5, */
+        opcion = leerEntero("Opcion: ", OP_AGREGAR, OP_SALIR);
+
+        switch (opcion) {
+            case OP_AGREGAR:
+                agregarLibro(ARCHIVO_LIBROS);
+                break;
+            case OP_LISTAR:
+                listarLibros(ARCHIVO_LIBROS, false, 0);
+                break;
+            case OP_FILTRAR:
+                listarPorPrecio(ARCHIVO_LIBROS);
+                break;
+            case OP_DIVIDIR:
+                dividirArchivo(ARCHIVO_LIBROS, ARCHIVO_DISPONIBLES, ARCHIVO_PRESTADOS);
+                break;
+            case OP_SALIR:
+                printf("\nFin del programa. Hasta luego.\n");
+                break;
+        }
+    } while (opcion != OP_SALIR);
+
+    return 0;
+}
+
+/* Funciones de input -F*/
+
+void leerLinea(char *destino, int tam) {
+    size_t largo;
+    int c;
+
+    if (fgets(destino, tam, stdin) == NULL) {
+        destino[0] = '\0';
+    } else {
+        largo = strlen(destino);
+        if (largo > 0 && destino[largo - 1] == '\n') {
+            destino[largo - 1] = '\0';
+        } else {
+            while ((c = getchar()) != '\n' && c != EOF) {
+                /* descarta el resto de la linea */
+            }
+        }
+    }
+}
+
+/* -F Pide un texto hasta que sea valido y lo guarda */
+void leerTexto(const char *mensaje, char *destino, int tam) {
+    bool valido;
+
+    do {
+        printf("%s", mensaje);
+        leerLinea(destino, tam);
+        valido = destino[0] != '\0'
+                 && !isspace((unsigned char) destino[0])
+                 && strchr(destino, SEPARADOR) == NULL;
+        if (!valido) {
+            printf("  Error: no puede estar vacio, empezar con espacio ni contener '%c'.\n",
+                   SEPARADOR);
+        }
+    } while (!valido);
+}
+
+/* [F] Pide un entero entre min y max (inclusive) hasta que sea valido.
+ * sscanf con "%d %c" devuelve 1 solo si hay un numero y nada mas despues:
+ * asi se rechazan entradas como "12abc" o "3 4". */
+int leerEntero(const char *mensaje, int min, int max) {
+    char linea[MAX_LINEA];
+    int valor = 0;
+    char extra;
+    bool valido;
+
+    do {
+        printf("%s", mensaje);
+        leerLinea(linea, MAX_LINEA);
+        valido = sscanf(linea, "%d %c", &valor, &extra) == 1
+                 && valor >= min && valor <= max;
+        if (!valido) {
+            printf("  Error: ingrese un numero entero entre %d y %d.\n", min, max);
+        }
+    } while (!valido);
+
+    return valor;
+}
 
 
 
