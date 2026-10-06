@@ -74,6 +74,75 @@ void listarLibros(char nombreArchivo[], bool filtrar, float precioMaximo);
 void listarPorPrecio(char nombreArchivo[]);
 
 int main(void) {
+    int opcion;
+
+    do {
+        mostrarMenu();
+        /* leerEntero ya valida que la opcion este entre 1 y 5, */
+        opcion = leerEntero("Opcion: ", OP_AGREGAR, OP_SALIR);
+
+        switch (opcion) {
+            case OP_AGREGAR:
+                agregarLibro(ARCHIVO_LIBROS);
+                break;
+            case OP_LISTAR:
+                listarLibros(ARCHIVO_LIBROS, false, 0);
+                break;
+            case OP_FILTRAR:
+                listarPorPrecio(ARCHIVO_LIBROS);
+                break;
+            case OP_DIVIDIR:
+                dividirArchivo(ARCHIVO_LIBROS, ARCHIVO_DISPONIBLES, ARCHIVO_PRESTADOS);
+                break;
+            case OP_SALIR:
+                printf("\nFin del programa. Hasta luego.\n");
+                break;
+        }
+    } while (opcion != OP_SALIR);
+
+    return 0;
+}
+
+/* Funciones de input -F*/
+
+/* -F Descarta lo que quedo en el teclado hasta el enter, para que no se
+- mezcle con la proxima lectura. Se usa en lugar de fflush(stdin), que no
+- es C estandar (solo funciona en Windows). */
+void limpiarBuffer(void) {
+    int c;
+
+    do {
+        c = getchar();
+    } while (c != '\n' && c != EOF);
+}
+
+/* -F Pide un texto de una sola palabra y lo guarda en destino.
+- %59s lee como maximo 59 letras (MAX_STR - 1) para no escribir fuera del
+- arreglo y dejar lugar para el '\0'. */
+void leerTexto(char mensaje[], char destino[]) {
+    printf("%s", mensaje);
+    scanf("%59s", destino);
+    limpiarBuffer();
+}
+
+/* [F] Pide un entero entre min y max (inclusive) hasta que sea valido.
+- Si el usuario escribe letras, scanf no guarda nada: por eso valor arranca
+- fuera del rango y el ciclo vuelve a pedirlo. */
+int leerEntero(char mensaje[], int min, int max) {
+    int valor;
+
+    do {
+        printf("%s", mensaje);
+        valor = min - 1;
+        scanf("%d", &valor);
+        limpiarBuffer();
+        if (valor < min || valor > max) {
+            printf("  Error: ingrese un numero entero entre %d y %d.\n", min, max);
+        }
+    } while (valor < min || valor > max);
+
+    return valor;
+}
 
 
 
