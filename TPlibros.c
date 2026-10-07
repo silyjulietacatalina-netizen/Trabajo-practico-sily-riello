@@ -163,7 +163,45 @@ int leerEntero(const char *mensaje, int min, int max) {
     return valor;
 }
 
+/* [J] Pide un numero real mayor a cero (un precio) hasta que sea valido.
+ * Misma tecnica que leerEntero. El separador decimal es el punto. */
+float leerFloatPositivo(const char *mensaje) {
+    char linea[MAX_LINEA];
+    float valor = 0;
+    char extra;
+    bool valido;
 
+    do {
+        printf("%s", mensaje);
+        leerLinea(linea, MAX_LINEA);
+        valido = sscanf(linea, "%f %c", &valor, &extra) == 1 && valor > 0;
+        if (!valido) {
+            printf("  Error: ingrese un numero mayor a 0 (use punto para los decimales).\n");
+        }
+    } while (!valido);
+
+    return valor;
+}
+
+/* [J] Hace una pregunta de si/no. Acepta S/s/N/n.
+ * Devuelve true si la respuesta es S y false si es N. */
+bool leerSiNo(const char *mensaje) {
+    char linea[MAX_LINEA];
+    char respuesta;
+    bool valido;
+
+    do {
+        printf("%s (S/N): ", mensaje);
+        leerLinea(linea, MAX_LINEA);
+        respuesta = (char) toupper((unsigned char) linea[0]);
+        valido = strlen(linea) == 1 && (respuesta == 'S' || respuesta == 'N');
+        if (!valido) {
+            printf("  Error: responda S o N.\n");
+        }
+    } while (!valido);
+
+    return respuesta == 'S';
+}
 
 
     return 0;
