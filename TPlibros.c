@@ -20,7 +20,7 @@ Tema: LIBROS
      5. Salir
  */
 
-//bibliotecas -J
+//bibliotecas -J=
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -181,6 +181,138 @@ bool leerSiNo(char mensaje[]) {
 
     return respuesta == 'S' || respuesta == 's';
 }
+
+/* -F Abre un archivo y avisa si no se pudo.
+ * Centraliza el control de fopen == NULL para no repetirlo en cada opcion.
+ * Devuelve el puntero al archivo, o NULL si fallo. */
+FILE *abrirArchivo(char nombre[], char modo[]) {
+    FILE *archivo = fopen(nombre, modo);
+
+    if (archivo == NULL) {
+        printf("Error: no se pudo abrir el archivo \"%s\".\n", nombre);
+    }
+    return archivo;
+}
+
+/* -F Lee UN libro (una linea) del archivo y lo guarda en *libro.
+- Recibe un puntero para modificar la variable del que llama (->).
+- El formato es igual al del apunte: campos separados por espacios.
+- El bool se lee primero en un int: fscanf no tiene formato para bool.
+- Devuelve true si leyo los 5 campos y false al llegar al final del archivo. */
+bool leerLibro(FILE *archivo, t_libro *libro) {
+    int disponible;
+    bool leido = false;
+
+    if (fscanf(archivo, "%59s %59s %d %f %d",
+               libro->titulo, libro->autor, &libro->anio,
+               &libro->precio, &disponible) == CAMPOS_LIBRO) {
+        if (disponible == 1) {
+            libro->disponible = true;
+        } else {
+            libro->disponible = false;
+        }
+        leido = true;
+    }
+    return leido;
+}
+
+/* -F Escribe UN libro como una linea del archivo, con el mismo formato que
+- lee leerLibro. El '\n' final es obligatorio para separar registros.
+- El libro se recibe por valor (una copia), como en el apunte de estructuras. */
+void escribirLibro(FILE *archivo, t_libro libro) {
+    int disponible;
+
+    if (libro.disponible) {
+        disponible = 1;
+    } else {
+        disponible = 0;
+    }
+    fprintf(archivo, "%s %s %d %.2f %d\n",
+            libro.titulo, libro.autor, libro.anio, libro.precio, disponible);
+}
+
+/* -F Carga por teclado todos los campos de un libro, validados, y devuelve
+- el libro completo con return (como cargarDatos() del apunte de archivos). */
+t_libro cargarLibro(void) {
+    t_libro libro;
+
+    leerTexto("Titulo (use _ en lugar de espacios): ", libro.titulo);
+    leerTexto("Autor (use _ en lugar de espacios): ", libro.autor);
+    libro.anio = leerEntero("Anio de publicacion: ", ANIO_MIN, ANIO_MAX);
+    libro.precio = leerFloatPositivo("Precio: $");
+    libro.disponible = leerSiNo("Esta disponible?");
+
+    return libro;
+}
+
+/*Opciones del menu*/
+
+/* -F Opcion 1: carga un libro y lo agrega al final del archivo.
+ * Modo "a" (append): agrega sin borrar lo que ya habia y, si el archivo
+ * no existe, lo crea. Primero se cargan los datos y despues se abre el
+ * archivo, para tenerlo abierto el menor tiempo posible. */
+void agregarLibro(char nombreArchivo[]) {
+    t_libro libro;
+    FILE *archivo;
+
+    printf("\n--- Agregar libro ---\n");
+    libro = cargarLibro();
+
+    archivo = abrirArchivo(nombreArchivo, "a");
+    if (archivo != NULL) {
+        escribirLibro(archivo, libro);
+        fclose(archivo);
+        printf("Libro agregado correctamente.\n");
+    }
+}
+
+/* -F Opcion 4: recorre el archivo de origen y copia cada libro a uno de dos
+ * archivos nuevos segun el campo booleano "disponible".
+ * Los archivos destino se abren en modo "w" A PROPOSITO: se regeneran
+ * completos cada vez que se divide, para que no queden libros duplicados.
+ * Se lee de un archivo y se escribe en otros: nunca lectura y escritura
+ * sobre el mismo archivo a la vez. */
+void dividirArchivo(char nombreOrigen[], char nombreDisponibles[],
+                    char nombrePrestados[]) {
+    FILE *origen;
+    FILE *disponibles;
+    FILE *prestados;
+    t_libro libro;
+    int cantDisponibles = 0;
+    int cantPrestados = 0;
+
+    origen = abrirArchivo(nombreOrigen, "r");
+    if (origen != NULL) {
+        disponibles = abrirArchivo(nombreDisponibles, "w");
+        prestados = abrirArchivo(nombrePrestados, "w");
+
+        if (disponibles != NULL && prestados != NULL) {
+            while (leerLibro(origen, &libro)) {
+                if (libro.disponible) {
+                    escribirLibro(disponibles, libro);
+                    cantDisponibles++;
+                } else {
+                    escribirLibro(prestados, libro);
+                    cantPrestados++;
+                }
+            }
+            printf("\nArchivo dividido correctamente:\n");
+            printf("  %-16s %d libros\n", nombreDisponibles, cantDisponibles);
+            printf("  %-16s %d libros\n", nombrePrestados, cantPrestados);
+        }
+
+        /* Se cierra cada archivo que se haya podido abrir. */
+        if (disponibles != NULL) {
+            fclose(disponibles);
+        }
+        if (prestados != NULL) {
+            fclose(prestados);
+        }
+        fclose(origen);
+    }
+}
+
+
 
 
     return 0;
