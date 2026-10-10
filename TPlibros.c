@@ -312,6 +312,82 @@ void dividirArchivo(char nombreOrigen[], char nombreDisponibles[],
     }
 }
 
+/* [J] Muestra las opciones del menu. */
+void mostrarMenu(void) {
+    printf("\n========== CATALOGO DE LIBROS ==========\n");
+    printf("%d. Agregar un libro\n", OP_AGREGAR);
+    printf("%d. Listar todos los libros\n", OP_LISTAR);
+    printf("%d. Listar libros hasta un precio maximo\n", OP_FILTRAR);
+    printf("%d. Dividir en disponibles / prestados\n", OP_DIVIDIR);
+    printf("%d. Salir\n", OP_SALIR);
+    printf("========================================\n");
+}
+
+/* [J] Imprime los titulos de las columnas del listado. */
+void mostrarEncabezado(void) {
+    printf("\n%-30s %-25s %5s %11s  %-10s\n",
+           "TITULO", "AUTOR", "ANIO", "PRECIO", "ESTADO");
+    printf("%-30s %-25s %5s %11s  %-10s\n",
+           "------------------------------", "-------------------------",
+           "-----", "-----------", "----------");
+}
+
+/* [J] Imprime un libro en una fila, alineado con el encabezado.
+- %-30s: alinea a la izquierda ocupando 30 lugares. */
+void mostrarLibro(t_libro libro) {
+    printf("%-30s %-25s %5d %11.2f  ",
+           libro.titulo, libro.autor, libro.anio, libro.precio);
+    if (libro.disponible) {
+        printf("Disponible\n");
+    } else {
+        printf("Prestado\n");
+    }
+}
+
+/* [J] Condicion elegida por el equipo para la opcion 3:
+ * el precio del libro es menor o igual al precio maximo pedido.
+ * Esta en una funcion propia para poder cambiar la condicion en un solo lugar. */
+bool cumpleCondicion(t_libro libro, float precioMaximo) {
+    return libro.precio <= precioMaximo;
+}
+
+/* [J] Recorre el archivo de principio a fin (acceso secuencial) y muestra los
+ * libros por pantalla. La usan las opciones 2 y 3 para no repetir codigo:
+ *   - filtrar = false: muestra todos (precioMaximo no se usa).
+ *   - filtrar = true:  muestra solo los que cumplen la condicion.
+ * El ciclo termina cuando leerLibro devuelve false (fin del archivo). */
+void listarLibros(char nombreArchivo[], bool filtrar, float precioMaximo) {
+    FILE *archivo;
+    t_libro libro;
+    int mostrados = 0;
+
+    archivo = abrirArchivo(nombreArchivo, "r");
+    if (archivo != NULL) {
+        mostrarEncabezado();
+        while (leerLibro(archivo, &libro)) {
+            if (!filtrar || cumpleCondicion(libro, precioMaximo)) {
+                mostrarLibro(libro);
+                mostrados++;
+            }
+        }
+        fclose(archivo);
+
+        if (mostrados == 0) {
+            printf("No hay libros para mostrar.\n");
+        } else {
+            printf("\nTotal de libros mostrados: %d\n", mostrados);
+        }
+    }
+}
+
+/* [J] Opcion 3: pide el precio maximo y lista los libros que no lo superan. */
+void listarPorPrecio(char nombreArchivo[]) {
+    float precioMaximo;
+
+    printf("\n--- Libros hasta un precio maximo ---\n");
+    precioMaximo = leerFloatPositivo("Precio maximo: $");
+    listarLibros(nombreArchivo, true, precioMaximo);
+}
 
 
 
