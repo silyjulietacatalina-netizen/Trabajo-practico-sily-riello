@@ -1,0 +1,15 @@
+Cien anios de soledad;Gabriel Garcia Marquez;1967;18500.00;1
+El Aleph;Jorge Luis Borges;1949;12300.00;0
+Rayuela;Julio Cortazar;1963;16750.50;1
+Ficciones;Jorge Luis Borges;1944;11900.00;1
+El tunel;Ernesto Sabato;1948;9800.00;0
+Martin Fierro;Jose Hernandez;1872;7500.00;1
+Don Quijote de la Mancha;Miguel de Cervantes;1605;24999.99;1
+1984;George Orwell;1949;14200.00;0
+Fahrenheit 451;Ray Bradbury;1953;13650.00;1
+El principito;Antoine de Saint-Exupery;1943;8900.00;1
+Orgullo y prejuicio;Jane Austen;1813;10400.00;0
+Crimen y castigo;Fiodor Dostoievski;1866;19800.00;1
+El lenguaje de programacion C;Kernighan y Ritchie;1978;45000.00;0
+Sobre heroes y tumbas;Ernesto Sabato;1961;17300.00;1
+La invencion de Morel;Adolfo Bioy Casares;1940;11250.00;0
