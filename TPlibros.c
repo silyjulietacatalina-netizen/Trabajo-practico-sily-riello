@@ -388,8 +388,3 @@ void listarPorPrecio(char nombreArchivo[]) {
     precioMaximo = leerFloatPositivo("Precio maximo: $");
     listarLibros(nombreArchivo, true, precioMaximo);
 }
-
-
-
-    return 0;
-}
